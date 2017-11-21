@@ -3,7 +3,9 @@ package menu;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 import entidades.Actores;
@@ -104,19 +106,19 @@ public class Menu {
 				} else {
 					reparto.setCodigo(null);
 				}
-				
+
 				System.out.println("Actor:");
 				Actores actr = new Actores();
 				String ctor = scanner.nextLine();
 				actr.setCodigo(Integer.parseInt(ctor));
 				reparto.setActores(actr);
-				
+
 				System.out.println("Titulo:");
 				Peliculas pl = new Peliculas();
 				String repPel = scanner.nextLine();
 				pl.setCodigo(Integer.parseInt(repPel));
 				reparto.setPeliculas(pl);
-				
+
 				System.out.println("Tipo de papel: principal / secundario");
 				String tipPap = scanner.nextLine();
 				reparto.setTipoPapel(tipPap);
@@ -133,6 +135,24 @@ public class Menu {
 			System.out.println("3. Delete Reparto");
 			String choice12 = scanner.nextLine();
 
+			switch (choice12) {
+			case "1":
+				System.out.println("Introduce el id del actor a borrar:");
+				String delAct = scanner.nextLine();
+				ah.HibDelete(Integer.parseInt(delAct), "actores");
+				break;
+			case "2":
+				System.out.println("Introduce el id de la pelicula a borrar:");
+				String delPel = scanner.nextLine();
+				ah.HibDelete(Integer.parseInt(delPel), "peliculas");
+				break;
+			case "3":
+				System.out.println("Introduce el id del reparto a borrar:");
+				String delRep = scanner.nextLine();
+				ah.HibDelete(Integer.parseInt(delRep), "reparto");
+				break;
+			}
+
 			break;
 		case "3":
 			// Perform "decrypt number" case.
@@ -144,7 +164,48 @@ public class Menu {
 			System.out.println("5. Select All Reparto");
 			System.out.println("6. Select Reparto por su key");
 			String choice13 = scanner.nextLine();
+			switch (choice13) {
+			case "1":
+				ArrayList<Actores> models=(ArrayList<Actores>) ah.getAllActores();
+				for(Actores model : models) {
+		            System.out.println(model.getCodigo()+" "+model.getNombre()+" "+model.getFNacimiento()+" "+model.getNacionalidad());
+		        }
+				break;
+			case "2":
+				Actores selIdAct = new Actores();
+				System.out.println("Introduce id:");
+				String selAct = scanner.nextLine();
+				selIdAct=ah.getActoresById(Integer.parseInt(selAct));
+				System.out.println(selIdAct.getCodigo()+" "+selIdAct.getNombre()+" "+selIdAct.getFNacimiento()+" "+selIdAct.getNacionalidad());
+				break;
+			case "3":
+				ArrayList<Peliculas> listPel=(ArrayList<Peliculas>) ah.getAllPeliculas();
+				for(Peliculas pelik : listPel) {
+		            System.out.println(pelik.getCodigo()+" "+pelik.getTitulo()+" "+pelik.getFecha()+" "+pelik.getPresupuesto());
+		        }
+				break;
+			case "4":
+				Peliculas selIdPel = new Peliculas();
+				System.out.println("Introduce id:");
+				String selPel = scanner.nextLine();
+				selIdPel=ah.getPeliculasById(Integer.parseInt(selPel));
+				System.out.println(selIdPel.getCodigo()+" "+selIdPel.getTitulo()+" "+selIdPel.getFecha()+" "+selIdPel.getPresupuesto());
+				break;
+			case "5":
+				ArrayList<Reparto> listRep=(ArrayList<Reparto>) ah.getAllReparto();
+				for(Reparto reps : listRep) {
+		            System.out.println(reps.getCodigo()+" "+reps.getActores().getCodigo()+" "+reps.getPeliculas().getCodigo()+" "+reps.getTipoPapel());
+		        }
+				break;
+			case "6":
+				Reparto selIdRep =new Reparto();
+				System.out.println("Introduce id:");
+				String selRep = scanner.nextLine();
+				selIdRep=ah.getRepartoById(Integer.parseInt(selRep));
+				System.out.println(selIdRep.getCodigo()+" "+selIdRep.getActores().getCodigo()+" "+selIdRep.getPeliculas().getCodigo()+" "+selIdRep.getTipoPapel());
+				break;
 
+			}
 			break;
 		default:
 			// The user input an unexpected choice.
